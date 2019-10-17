@@ -1,17 +1,31 @@
 {
-  "name": "weather-forecast-kaios",
+  "name": "forecast-kaios",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.1",
+    "capitals-coordinates": "^1.2.0",
     "react": "^16.9.0",
+    "react-autosuggest": "^9.4.3",
     "react-dom": "^16.9.0",
-    "react-scripts": "3.1.2"
+    "react-scripts": "3.1.1",
+    "react-svg": "^10.0.21",
+    "styled-components": "^4.3.2",
+    "typeface-roboto": "0.0.75"
+  },
+  "devDependencies": {
+    "kdeploy": "github:kaiostech/kdeploy"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build  && rm -r /C/Users/ikitayev/workspace/kaios/shared/weather-kaios-styled && cp -r ./build /C/Users/ikitayev/workspace/kaios/shared/weather-kaios-styled",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "app:install": "kdeploy build install",
+    "app:uninstall": "kdeploy build uninstall",
+    "app:update": "kdeploy build update",
+    "app:start": "kdeploy build start",
+    "app:stop": "kdeploy build stop"
   },
   "eslintConfig": {
     "extends": "react-app"

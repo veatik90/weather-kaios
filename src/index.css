@@ -1,13 +1,43 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+html,
+body,
+#root {
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #FFFFFF;
+  height: 100%;
 }
+
+/*
+  Remove the following styles before
+  sending to the device or simulator
+*/
+
+/* html,
+body,
+#root {
+  height: 320px;
+  width: 240px;
+}
+
+html,
+body {
+  background-color: gray;
+}
+
+div[class*="softkey"] {
+  top: 320px;
+  bottom: auto !important;
+  width: 240px;
+} */
