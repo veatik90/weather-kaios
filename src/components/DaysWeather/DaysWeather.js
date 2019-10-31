@@ -3,17 +3,22 @@ import styled from 'styled-components';
 import Icon, { statusMessage } from '../Icon/Icon';
 
 const daysWeather = React.forwardRef((props, ref) => {
-
   const days = props.weather.map((day) => (
     <DayWeather key={day.time}>
       <Date>{day.time}</Date>
       <IconWrapper>
-       <Icon type={day.icon} />
-       <Status>{statusMessage(day.icon)}</Status>
+        <Icon type={day.icon} />
+        <Status>{statusMessage(day.icon)}</Status>
       </IconWrapper>
       <TempWrapper>
-        <Temp>{day.temperatureHigh}&deg;</Temp>
-        <Temp lowTemp>{day.temperatureLow}&deg;</Temp>
+        <Temp>
+          {day.temperatureHigh}
+          &deg;
+        </Temp>
+        <Temp lowTemp>
+          {day.temperatureLow}
+          &deg;
+        </Temp>
       </TempWrapper>
     </DayWeather>
   ));
@@ -22,7 +27,7 @@ const daysWeather = React.forwardRef((props, ref) => {
       {days}
     </DaysWrapper>
   );
-})
+});
 
 export default daysWeather;
 
@@ -61,8 +66,8 @@ const Temp = styled.div`
   width: 19px;
   font-size: 12px;
   color: #1e1d20;
-  opacity: ${props => (props.lowTemp && '0.5')};
-  margin-left: ${props => (props.lowTemp && '5px')};
+  opacity: ${(props) => (props.lowTemp && '0.5')};
+  margin-left: ${(props) => (props.lowTemp && '5px')};
 `;
 
 const IconWrapper = styled.div`

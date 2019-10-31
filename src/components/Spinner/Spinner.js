@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const spinner = styled.div `
+const spinner = styled.div`
   display: flex;
   position: absolute;
   top: 231px;
@@ -20,8 +20,7 @@ const spinner = styled.div `
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-`
-
+`;
 
 
 export default spinner;

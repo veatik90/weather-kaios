@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 import SoftKey from './containers/Softkey/Softkey';
@@ -13,7 +14,7 @@ import StatusBar from './components/StatusBar/StatusBar';
 
 const CHECK_CONNECTION = 'Check the phone connection please';
 const GETTING_WEATHER = 'Getting the weather...';
-const GETTING_LOCATION = 'Getting location...'
+const GETTING_LOCATION = 'Getting location...';
 const UNABLE_RETRIEVE = 'Ooops... Unable to retrieve your location \n Choose the location please';
 const CHOOSE_LOCATION = 'Choose the location please';
 
@@ -32,48 +33,50 @@ class App extends Component {
       hourly: {},
       success: false,
       city: '',
+      // eslint-disable-next-line react/no-unused-state
       typing: false,
-      status: ''
+      status: '',
     };
 
     this.daysRef = createRef();
   }
-  
+
 
   componentDidMount() {
-    if ("geolocation" in navigator) {
+    if ('geolocation' in navigator) {
       this.setState({
         status: GETTING_LOCATION,
         loading: true,
       });
-      navigator.geolocation.getCurrentPosition(position => {
+
+      const options = {
+        enableHighAccuracy: false,
+        timeout: 10000,
+        maximumAge: 0,
+      };
+
+      const success = (position) => {
         locationAxios.get('reverse', {
           params: {
-            location: `${position.coords.latitude},${position.coords.longitude}`
-          }
+            location: `${position.coords.latitude},${position.coords.longitude}`,
+          },
         })
-        .then(response => { 
-          const coords = [position.coords.longitude, position.coords.latitude];
-          const country = response.data.results[0].locations[0].adminArea1;
-          const city = response.data.results[0].locations[0].adminArea5;
-          this.fetchWeather(city, coords, country);
-        })
-        .catch(
-          error => {
-            this.setState({
-              loading: false
-            });
-            
-          }
-        );
-      },
-      () => {
+          .then((response) => {
+            const coords = [position.coords.longitude, position.coords.latitude];
+            const country = response.data.results[0].locations[0].adminArea1;
+            const city = response.data.results[0].locations[0].adminArea5;
+            this.fetchWeather(city, coords, country);
+          });
+      };
+
+      const error = () => {
         this.setState({
           loading: false,
           status: UNABLE_RETRIEVE,
         });
-      },
-      {timeout:10000});  
+      };
+
+      navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
       this.setState({
         status: CHOOSE_LOCATION,
@@ -82,10 +85,10 @@ class App extends Component {
   }
 
   fetchWeather = (city, coords, country) => {
-    const [longitude, latitude] = coords; 
+    const [longitude, latitude] = coords;
 
     forecastAxios.get(`${latitude},${longitude}`)
-      .then(response => {        
+      .then((response) => {
         this.handleCurrentWeather(response.data.currently);
         this.handleTomorrowWeather(response.data.daily.data);
         this.handleDailyWeather(response.data.daily.data);
@@ -94,46 +97,46 @@ class App extends Component {
           success: true,
           status: '',
           loading: false,
-          city: city + `, ${country}`
-        });        
-      })
-      .catch(error => {
-        this.setState({
-          loading: false,
-          status: CHECK_CONNECTION
+          city: `${city}, ${country}`,
         });
       })
+      .catch(() => {
+        this.setState({
+          loading: false,
+          status: CHECK_CONNECTION,
+        });
+      });
   }
 
-  selectCity = (city, coords) => {   
+  selectCity = (city, coords) => {
     this.setState({
       loading: true,
-      success: false, 
-      status: GETTING_WEATHER
-    }); 
+      success: false,
+      status: GETTING_WEATHER,
+    });
 
-    if (!coords) {      
+    if (!coords) {
       locationAxios.get('address', {
         params: {
-          location: city
-        }
+          location: city,
+        },
       })
-      .then(response => {                 
-        //always take first result, if it's needed it can be turn into autocomplete with array of response.data.results
-        const cityLocation = response.data.results[0].locations[0].displayLatLng;  
-        const country = response.data.results[0].locations[0].adminArea1;
-        city = response.data.results[0].locations[0].adminArea5;
-        coords = [cityLocation.lng, cityLocation.lat];
-        this.fetchWeather(city, coords, country);
-      })
-      .catch(error => {
-        this.setState({
-          loading: false,
-          status: CHECK_CONNECTION
+        .then((response) => {
+        // always take first result, if it's needed it can be turn into autocomplete with array of response.data.results
+          const cityLocation = response.data.results[0].locations[0].displayLatLng;
+          const country = response.data.results[0].locations[0].adminArea1;
+          const locCity = response.data.results[0].locations[0].adminArea5;
+          const locCoords = [cityLocation.lng, cityLocation.lat];
+          this.fetchWeather(locCity, locCoords, country);
+        })
+        .catch(() => {
+          this.setState({
+            loading: false,
+            status: CHECK_CONNECTION,
+          });
         });
-      })
     } else {
-      const country = coords.properties.country;
+      const { country } = coords.properties;
       const crd = coords.geometry.coordinates;
       this.fetchWeather(city, crd, country);
     }
@@ -149,104 +152,104 @@ class App extends Component {
     const currentWeather = {
       time: new Date(data.time * 1000).toLocaleString('en-US', timeOptions),
       day: new Date(data.time * 1000).getDate(),
-      temperature:  Math.floor(data.temperature),
+      temperature: Math.floor(data.temperature),
       precip: Math.floor(data.precipProbability * 100),
-      icon: data.icon
-    }
+      icon: data.icon,
+    };
 
-    this.setState({ 
-      currentWeather, 
-     });
+    this.setState({
+      currentWeather,
+    });
   }
 
-  handleTomorrowWeather = (data) => { 
+  handleTomorrowWeather = (data) => {
     const timeOptions = {
       month: 'long',
-      day: '2-digit'
+      day: '2-digit',
     };
     const tomorrow = data[1];
+
     const tomorrowWeather = {
       time: new Date(tomorrow.time * 1000).toLocaleString('en-US', timeOptions),
       day: new Date(tomorrow.time * 1000).getDate(),
       precip: Math.floor(tomorrow.precipProbability * 100),
-      icon: tomorrow.icon
-    }
+      icon: tomorrow.icon,
+    };
     this.setState({ tomorrowWeather });
   }
 
-  handleDailyWeather = (data) => { 
+  handleDailyWeather = (data) => {
     const timeOptions = {
-      weekday: "short",
+      weekday: 'short',
       month: 'short',
-      day: '2-digit', 
+      day: '2-digit',
+      formatMatcher: 'best fit',
     };
-    const dailyWeather = data.map((day, index) => {
-      return {
-        time: index === 0 ? 'Today' : new Date(day.time * 1000).toLocaleString('en-US', timeOptions),
-        temperatureLow: Math.floor(day.temperatureLow),
-        temperatureHigh: Math.floor(day.temperatureHigh),
-        icon: day.icon
-      }
-    });            
+    const dailyWeather = data.map((day, index) => ({
+      time: index === 0 ? 'Today' : new Date(day.time * 1000).toLocaleString('en-US', timeOptions).slice(0, 11),
+      temperatureLow: Math.floor(day.temperatureLow),
+      temperatureHigh: Math.floor(day.temperatureHigh),
+      icon: day.icon,
+    }));
     this.setState({ dailyWeather });
   }
 
   handleHourlyForecast = (data) => {
     const getDayTime = (time) => {
-      switch(time) {
+      switch (time) {
         case 0: return 'night';
         case 6: return 'morning';
         case 12: return 'afternoon';
         case 18: return 'evening';
         default: return '';
       }
-    }
-    let hourly = [];
+    };
+    const hourly = [];
     data.forEach((dayData) => {
-      const date = new Date(dayData.time * 1000)
+      const date = new Date(dayData.time * 1000);
       const hour = date.getHours();
       if ((hour % 6 === 0) || (hour === 0)) {
         const day = date.getDate();
         hourly.push({
           id: day,
           temperature: Math.floor(dayData.temperature),
-          dayTime: getDayTime(hour)
+          dayTime: getDayTime(hour),
         });
       }
     });
-    
+
     this.setState({ hourly });
   }
 
   nextTab = () => {
-    this.setState(prevState => {
-      if(prevState.activeTab !== 2) {
+    this.setState((prevState) => {
+      if (prevState.activeTab !== 2) {
         return {
-          activeTab: ++prevState.activeTab
-        }
+          activeTab: prevState.activeTab + 1,
+        };
       }
       return prevState;
     });
   }
 
   prevTab = () => {
-    this.setState(prevState => {
-      if(prevState.activeTab !== 0) {
+    this.setState((prevState) => {
+      if (prevState.activeTab !== 0) {
         return {
-          activeTab: --prevState.activeTab
-        }
+          activeTab: prevState.activeTab - 1,
+        };
       }
       return prevState;
     });
   }
 
-  pageDown = () => {    
+  pageDown = () => {
     if (this.daysRef.current) {
       this.daysRef.current.style.top = STET_DOWN;
     }
   }
 
-  pageUp = () => {    
+  pageUp = () => {
     if (this.daysRef.current) {
       this.daysRef.current.style.top = STET_UP;
     }
@@ -254,71 +257,71 @@ class App extends Component {
 
   isTypingNow = (value) => {
     this.setState({
-      isTyping: !!value
+      isTyping: !!value,
     });
   }
 
-  render(){
-    const { 
+  render() {
+    const {
       activeTab,
-      currentWeather, 
-      tomorrowWeather, 
+      currentWeather,
+      tomorrowWeather,
       dailyWeather,
-      hourly, 
+      hourly,
       success,
       status,
       city,
       loading,
-      isTyping
-    } = this.state;    
+      isTyping,
+    } = this.state;
 
     const renderTabsContent = () => {
       switch (activeTab) {
-        case 0: return <OneDayWeather weather={currentWeather} hourly={hourly}/>;
+        case 0: return <OneDayWeather weather={currentWeather} hourly={hourly} />;
         case 1: return <OneDayWeather weather={tomorrowWeather} tomorrow hourly={hourly} />;
         case 2: return <DaysWeather ref={this.daysRef} weather={dailyWeather} />;
         default: return null;
       }
-    }
+    };
 
     const spinner = loading ? <Spinner /> : null;
 
     const softKeys = isTyping
       ? (
-        <SoftKey 
+        <SoftKey
           right="Back"
           left="Set"
         />
-      ) 
+      )
       : (
-        <SoftKey 
+        <SoftKey
           onKeyLeft={this.prevTab}
           onKeyRight={this.nextTab}
           onKeyDown={this.pageDown}
           onKeyUp={this.pageUp}
         />
       );
-      
+
 
     return (
       <>
         {spinner}
         <StatusBar />
-        <Search 
+        <Search
           select={this.selectCity}
-          city={city} 
+          city={city}
           typing={this.isTypingNow}
         />
         <TabsArea>
-          <Tab active={activeTab===0}>Today</Tab>
-          <Tab active={activeTab===1}>Tomorrow</Tab>
-          <Tab active={activeTab===2}>7 days</Tab>
+          <Tab active={activeTab === 0}>Today</Tab>
+          <Tab active={activeTab === 1}>Tomorrow</Tab>
+          <Tab active={activeTab === 2}>7 days</Tab>
         </TabsArea>
         <ContentWrapper>
           {
-            success  
-            ? renderTabsContent()
-            : <Warning>{status}</Warning>
+            success
+              ? renderTabsContent()
+              : <Warning>{status}</Warning>
           }
         </ContentWrapper>
         {softKeys}

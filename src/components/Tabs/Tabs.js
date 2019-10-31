@@ -18,5 +18,5 @@ export const Tab = styled.div`
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
-  border-bottom: ${props => (props.active && '2px solid #ffffff')};
+  border-bottom: ${(props) => (props.active && '2px solid #ffffff')};
 `;

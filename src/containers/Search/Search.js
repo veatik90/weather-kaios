@@ -15,11 +15,10 @@ class Search extends Component {
     };
   }
 
-  getCoords = (city) => {      
-    const index = countriesArray.findIndex((country) => 
-      country
-        .properties.capital.toLowerCase() === city.toLowerCase());
-    if (index > -1) {      
+  getCoords = (city) => {
+    const index = countriesArray
+      .findIndex((country) => country.properties.capital.toLowerCase() === city.toLowerCase());
+    if (index > -1) {
       return countriesArray[index];
     }
 
@@ -29,25 +28,25 @@ class Search extends Component {
   onKeyDown = (event) => {
     const { value } = this.state;
     const { select } = this.props;
-    if(value){
-      if(event.key === "SoftLeft"){
-        select(value, this.getCoords(value))
+    if (value) {
+      if (event.key === 'SoftLeft') {
+        select(value, this.getCoords(value));
         this.setState({
           value: '',
-          suggestions: []
+          suggestions: [],
         });
         this.props.typing('');
-      } else if (event.key === "SoftRight"){       
+      } else if (event.key === 'SoftRight') {
         this.setState({
           value: '',
-          suggestions: []
+          suggestions: [],
         });
         this.props.typing('');
       }
     }
   };
 
-  onChange = (event, { newValue, method }) => {
+  onChange = (event, { newValue }) => {
     this.props.typing(newValue);
     this.setState({
       value: newValue,
@@ -68,14 +67,11 @@ class Search extends Component {
 
   checkCity = (city) => {
     const filtred = countriesArray.filter((country) => country.properties.capital.toLowerCase()
-      .indexOf(city.toLowerCase()) === 0      
-    );
+      .indexOf(city.toLowerCase()) === 0);
     return filtred.map((country) => country.properties.capital);
   }
 
-  getSuggestions = (value) => {
-    return this.checkCity(value);
-  }
+  getSuggestions = (value) => this.checkCity(value)
 
   getSuggestionValue = (suggestion) => suggestion;
 
@@ -97,26 +93,25 @@ class Search extends Component {
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
             getSuggestionValue={this.getSuggestionValue}
             renderSuggestion={renderSuggestion}
-            renderInputComponent={function(props) {
-              return (
-                <SearchWrapper>
-                  <InputWrapper>
-                    <IconWrapper>
-                      <Icon type="search"/>
-                    </IconWrapper>
-                    <Input
-                      {...props}
-                      autoFocus
-                    />
-                  </InputWrapper>
-                </SearchWrapper>)
-            }}
+            renderInputComponent={(props) => (
+              <SearchWrapper>
+                <InputWrapper>
+                  <IconWrapper>
+                    <Icon type="search" />
+                  </IconWrapper>
+                  <Input
+                    {...props}
+                    autoFocus
+                  />
+                </InputWrapper>
+              </SearchWrapper>
+            )}
             inputProps={
               {
-                placeholder: city ?  city : 'Search places',
+                placeholder: city || 'Search places',
                 value,
                 onChange: this.onChange,
-                onKeyDown: this.onKeyDown
+                onKeyDown: this.onKeyDown,
               }
             }
           />
@@ -205,4 +200,3 @@ const Input = styled.input`
     color: #5185ba;
   }
 `;
-

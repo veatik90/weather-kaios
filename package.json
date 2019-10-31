@@ -14,7 +14,12 @@
     "typeface-roboto": "0.0.75"
   },
   "devDependencies": {
-    "kdeploy": "github:kaiostech/kdeploy"
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^1.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -25,7 +30,8 @@
     "app:uninstall": "kdeploy build uninstall",
     "app:update": "kdeploy build update",
     "app:start": "kdeploy build start",
-    "app:stop": "kdeploy build stop"
+    "app:stop": "kdeploy build stop",
+    "lint": "eslint src/"
   },
   "eslintConfig": {
     "extends": "react-app"

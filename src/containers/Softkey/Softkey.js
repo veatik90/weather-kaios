@@ -1,64 +1,64 @@
-import React, { Component } from "react";
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
 
 class softkey extends Component {
-
   componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyDown);
+    document.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleKeyDown);
+    document.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown = evt => {
+  handleKeyDown = (evt) => {
     const {
       onKeyLeft,
+      // eslint-disable-next-line react/prop-types
       onKeyCenter,
       onKeyRight,
       onKeyDown,
       onKeyUp,
       onSoftKeyLeft,
-      onSoftKeyRight
+      onSoftKeyRight,
     } = this.props;
-    
-  
+
+
     switch (evt.key) {
-      case "ArrowLeft":
+      case 'ArrowLeft':
         return onKeyLeft && onKeyLeft(evt);
-      case "Enter":
+      case 'Enter':
         return onKeyCenter && onKeyCenter(evt);
-      case "ArrowRight":
+      case 'ArrowRight':
         return onKeyRight && onKeyRight(evt);
-      case "ArrowDown":
+      case 'ArrowDown':
         return onKeyDown && onKeyDown(evt);
-      case "ArrowUp":
+      case 'ArrowUp':
         return onKeyUp && onKeyUp(evt);
-      case "SoftLeft":
+      case 'SoftLeft':
         return onSoftKeyLeft && onSoftKeyLeft(evt);
-      case "SoftRight":
+      case 'SoftRight':
         return onSoftKeyRight && onSoftKeyRight(evt);
       default:
-        return;
+        return null;
     }
   };
-  
-  render (){
+
+  render() {
     const {
       left,
       center,
       right,
     } = this.props;
     return (
-      <KeysWrapper >
-        <label className="left" >{left}</label>
+      <KeysWrapper>
+        <label className="left">{left}</label>
         <label className="center">{center}</label>
         <label className="right">{right}</label>
       </KeysWrapper>
     );
   }
-
 }
 
 export default softkey;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Icon from '../Icon/Icon';
 
-const warning = ({children}) => (
+const warning = ({ children }) => (
   <>
     <IconWrapper>
       <Icon type="big-partly-cloudy-day" />

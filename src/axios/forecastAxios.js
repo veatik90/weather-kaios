@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 
 
 axiosInstance.defaults.params = {
-  units: 'ca'
+  units: 'ca',
 };
 
 export default axiosInstance;

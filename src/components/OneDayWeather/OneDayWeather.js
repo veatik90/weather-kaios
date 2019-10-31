@@ -1,60 +1,65 @@
 import React from 'react';
 import styled from 'styled-components';
 import Diagram from '../WeatherDiagram/WeatherDiagram';
-import Icon, {statusMessage} from '../Icon/Icon';
+import Icon, { statusMessage } from '../Icon/Icon';
 
 const oneDayWeather = ({ weather, hourly, tomorrow }) => {
-
-  const getHourlyWeather = () => {    
-    return hourly.filter((day) => (day.id === weather.day)); 
-  }
+  const getHourlyWeather = () => hourly.filter((day) => (day.id === weather.day));
 
   const diagramCoordsCalc = () => {
-    let coords = {};
+    const coords = {};
     const hoursWeather = getHourlyWeather();
-    if(hoursWeather.length) {
-      const sorted = hoursWeather.sort(function(a,b){return a.temperature-b.temperature});      
-      let min = sorted[0].temperature;
-  
-      sorted.forEach(item => {
-        const dayTime = item.dayTime;
+    if (hoursWeather.length) {
+      const sorted = hoursWeather.sort((a, b) => a.temperature - b.temperature);
+      const min = sorted[0].temperature;
+
+      sorted.forEach((item) => {
+        const { dayTime } = item;
         coords[dayTime] = (item.temperature - min) + 32;
       });
     }
     return coords;
-  }
+  };
 
   const getHourlyTemps = () => {
     const hoursWeather = getHourlyWeather();
-    let temps = {};
-    hoursWeather.forEach(item => {
-      const dayTime = item.dayTime;
+    const temps = {};
+    hoursWeather.forEach((item) => {
+      const { dayTime } = item;
       temps[dayTime] = item.temperature;
     });
-    
+
     return temps;
-  }
+  };
 
   return (
-    <Rows> 
+    <Rows>
       <IconWrap>
-        <Icon type={'big-' + weather.icon}/>
+        <Icon type={`big-${weather.icon}`} />
       </IconWrap>
       <StatusMessage>{statusMessage(weather.icon)}</StatusMessage>
       <Row>
         <Date>{weather.time}</Date>
       </Row>
       <Row>
-        {tomorrow || <CurrentTemp>{weather.temperature}&deg;</CurrentTemp>}
+        {tomorrow || (
+        <CurrentTemp>
+          {weather.temperature}
+          &deg;
+        </CurrentTemp>
+        )}
         <PrecipWrap>
-          <Icon type="humid"/>
-          <Precip>{weather.precip}%</Precip>
+          <Icon type="humid" />
+          <Precip>
+            {weather.precip}
+%
+          </Precip>
         </PrecipWrap>
       </Row>
       <Diagram temps={getHourlyTemps()} coords={diagramCoordsCalc()} />
     </Rows>
   );
-}
+};
 
 export default oneDayWeather;
 
@@ -103,7 +108,7 @@ const Precip = styled.div`
   margin-left: 5px;
 `;
 
-const IconWrap =  styled.div`
+const IconWrap = styled.div`
   width: 50px;
   height: 50px;
   position: absolute;
