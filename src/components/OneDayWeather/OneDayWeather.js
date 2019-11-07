@@ -52,7 +52,7 @@ const oneDayWeather = ({ weather, hourly, tomorrow }) => {
           <Icon type="humid" />
           <Precip>
             {weather.precip}
-%
+            %
           </Precip>
         </PrecipWrap>
       </Row>

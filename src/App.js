@@ -151,7 +151,7 @@ class App extends Component {
     };
     const currentWeather = {
       time: new Date(data.time * 1000).toLocaleString('en-US', timeOptions),
-      day: new Date(data.time * 1000).getDate(),
+      day: new Date(new Date(data.time * 1000).toString()).getDate(),
       temperature: Math.floor(data.temperature),
       precip: Math.floor(data.precipProbability * 100),
       icon: data.icon,
@@ -169,12 +169,16 @@ class App extends Component {
     };
     const tomorrow = data[1];
 
+    const today = new Date();
+    const offset = -(today.getTimezoneOffset() / 60);
+    const dataWithOffset = new Date(new Date(tomorrow.time * 1000).getTime() + offset * 3600 * 1000);
     const tomorrowWeather = {
-      time: new Date(tomorrow.time * 1000).toLocaleString('en-US', timeOptions),
-      day: new Date(tomorrow.time * 1000).getDate(),
+      time: dataWithOffset.toLocaleString('en-US', timeOptions),
+      day: dataWithOffset.getDate(),
       precip: Math.floor(tomorrow.precipProbability * 100),
       icon: tomorrow.icon,
     };
+
     this.setState({ tomorrowWeather });
   }
 
