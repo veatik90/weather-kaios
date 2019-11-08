@@ -148,13 +148,9 @@ class App extends Component {
       minute: '2-digit',
     };
 
-    const today = new Date();
-    const offset = -(today.getTimezoneOffset() / 60);
-    const dataWithOffset = new Date(new Date(data.time  * 1000).getTime() + offset * 3600 * 1000);
-
     const currentWeather = {
-      time: dataWithOffset.toLocaleString('en-US', timeOptions),
-      day: dataWithOffset.getDate(),
+      time: new Date(data.time  * 1000).toLocaleString('en-US', timeOptions),
+      day: new Date(data.time  * 1000).getDate(),
       temperature: Math.floor(data.temperature),
       precip: Math.floor(data.precipProbability * 100),
       icon: data.icon,

@@ -1,9 +1,10 @@
 {
   "version": "1.0.0",
-  "name": "Weather Forecast KaiOS",
-  "short_name": "Weather",
+  "name": "Weather Forecast Lite",
+  "short_name": "Weather Lite",
   "description": "The weather forecast application for KaiOS",
-  "type": "privileged",
+  "subtitle": "Check the weather!",
+  "type": "web",
   "launch_path": "/index.html",
   "icons": {
     "56": "/logo/logo56.png",
@@ -15,7 +16,7 @@
   },
   "locales": {
     "en-US": {
-      "name": "Forecast KaiOS",
+      "name": "Weather Forecast Lite",
       "subtitle": "The weather forecast application for KaiOS",
       "description": "The weather forecast application for KaiOS"
     }
@@ -26,6 +27,9 @@
       "description": "Required to set a location"
     }
   },
+  "categories": [
+    "utilities"
+  ],
   "orientation": [ "portrait-primary" ],
   "fullscreen": "true"
 }
