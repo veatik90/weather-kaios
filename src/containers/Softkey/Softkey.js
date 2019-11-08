@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
@@ -15,7 +14,6 @@ class softkey extends Component {
   handleKeyDown = (evt) => {
     const {
       onKeyLeft,
-      // eslint-disable-next-line react/prop-types
       onKeyCenter,
       onKeyRight,
       onKeyDown,

@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import Icon from '../Icon/Icon';
 
 const warning = ({ children }) => (
-  <>
+  <React.Fragment>
     <IconWrapper>
       <Icon type="big-partly-cloudy-day" />
     </IconWrapper>
     <Status>{children}</Status>
-  </>
+  </React.Fragment>
 );
 
 export default warning;

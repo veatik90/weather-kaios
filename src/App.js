@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 import SoftKey from './containers/Softkey/Softkey';
@@ -33,7 +32,6 @@ class App extends Component {
       hourly: {},
       success: false,
       city: '',
-      // eslint-disable-next-line react/no-unused-state
       typing: false,
       status: '',
     };
@@ -51,7 +49,7 @@ class App extends Component {
 
       const options = {
         enableHighAccuracy: false,
-        timeout: 10000,
+        timeout: 20000,
         maximumAge: 0,
       };
 
@@ -69,7 +67,7 @@ class App extends Component {
           });
       };
 
-      const error = () => {
+      const error = () => {        
         this.setState({
           loading: false,
           status: UNABLE_RETRIEVE,
@@ -149,9 +147,14 @@ class App extends Component {
       hour: '2-digit',
       minute: '2-digit',
     };
+
+    const today = new Date();
+    const offset = -(today.getTimezoneOffset() / 60);
+    const dataWithOffset = new Date(new Date(data.time  * 1000).getTime() + offset * 3600 * 1000);
+
     const currentWeather = {
-      time: new Date(data.time * 1000).toLocaleString('en-US', timeOptions),
-      day: new Date(new Date(data.time * 1000).toString()).getDate(),
+      time: dataWithOffset.toLocaleString('en-US', timeOptions),
+      day: dataWithOffset.getDate(),
       temperature: Math.floor(data.temperature),
       precip: Math.floor(data.precipProbability * 100),
       icon: data.icon,
@@ -308,7 +311,7 @@ class App extends Component {
 
 
     return (
-      <>
+      <React.Fragment>
         {spinner}
         <StatusBar />
         <Search
@@ -329,7 +332,7 @@ class App extends Component {
           }
         </ContentWrapper>
         {softKeys}
-      </>
+      </React.Fragment>
     );
   }
 }

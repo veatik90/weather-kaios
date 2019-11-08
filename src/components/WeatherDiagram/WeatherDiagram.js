@@ -1,11 +1,10 @@
-/* eslint-disable no-restricted-globals */
 import React from 'react';
 import styled from 'styled-components';
 
 const weatherDiagram = ({ coords, temps }) => {
   const emptyTemp = <Temp />;
   return (
-    <>
+    <React.Fragment>
       <DiagramWrapper>
         <Diagram diff={coords.night || 0}>Night</Diagram>
         <Diagram diff={coords.morning || 0}>Morning</Diagram>
@@ -38,7 +37,7 @@ const weatherDiagram = ({ coords, temps }) => {
           </Temp>
         ) : emptyTemp}
       </Temps>
-    </>
+    </React.Fragment>
   );
 };
 
